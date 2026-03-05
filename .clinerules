@@ -1,0 +1,16 @@
+Security - Protect sensitive files
+NEVER read, modify, or overwrite these files:
+.env
+
+.env.*
+
+*/.env
+
+*/.env
+
+ALWAYS ask for confirmation before:
+Reading any .env file
+
+Modifying any credential files
+
+Writing to files containing secrets
