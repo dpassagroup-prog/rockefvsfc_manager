@@ -34,7 +34,7 @@ const adminRegistrationSchema = z.object({
   nationality: z.string().optional(),
   previousClub: z.string().optional(),
   position: z.string().optional(),
-  season: z.string().default('2026'),
+  season: z.string(),
   emergencyContactName: z.string().optional(),
   emergencyContactPhone: z.string().optional(),
   medicalNotes: z.string().optional(),
@@ -42,11 +42,11 @@ const adminRegistrationSchema = z.object({
   consentPhotos: z.boolean().default(false),
   consentVideos: z.boolean().default(false),
   consentTravel: z.boolean().default(false),
-  termsAccepted: z.boolean().default(true), // admin assumes acceptance
-  parentSignature: z.string().optional(), // admin may not need signature
+  termsAccepted: z.boolean().default(true),
+  parentSignature: z.string().optional(),
   playerSignature: z.string().optional(),
   // Registration status – admin can set directly
-  registrationStatus: z.enum(['pending', 'accepted', 'rejected']).default('pending'),
+  registrationStatus: z.enum(['pending', 'accepted', 'rejected']),
 });
 
 type AdminRegistrationForm = z.infer<typeof adminRegistrationSchema>;
@@ -59,11 +59,15 @@ export function AdminRegistrationForm({ parents }: { parents: { id: string; full
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<AdminRegistrationForm>({
+  } = useForm({
     resolver: zodResolver(adminRegistrationSchema),
     defaultValues: {
       season: '2026',
       registrationStatus: 'pending',
+      consentPhotos: false,
+      consentVideos: false,
+      consentTravel: false,
+      termsAccepted: true,
     },
   });
 

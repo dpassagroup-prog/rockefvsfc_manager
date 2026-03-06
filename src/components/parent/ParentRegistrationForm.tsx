@@ -59,7 +59,7 @@ export function ParentRegistrationForm({ parent }: { parent: any }) {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<RegistrationForm>({
+  } = useForm({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       season: '2026',

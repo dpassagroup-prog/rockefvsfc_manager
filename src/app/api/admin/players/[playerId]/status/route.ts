@@ -31,7 +31,7 @@ export async function PATCH(
         where: eq(players.id, playerId),
       });
       if (player) {
-        await generatePlayerInvoices(player.id, player.parentId, player.season ?? '2026');
+        await generatePlayerInvoices(player.id, player.parentId!, player.season ?? '2026');
       }
     }
 

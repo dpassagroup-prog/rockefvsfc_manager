@@ -17,16 +17,37 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { firstName, lastName, dateOfBirth, ageGroup, parentId, registrationStatus, season } = body;
 
-    const [newPlayer] = await db.insert(players).values({
-      firstName,
-      lastName,
-      dateOfBirth: new Date(dateOfBirth),
-      ageGroup,
-      parentId: parentId || null, // will be null if not provided
-      status: registrationStatus === 'accepted' ? 'active' : 'pending',
-      registrationStatus: registrationStatus || 'pending',
-      season: season || '2026',
-    }).returning();
+    const [newPlayer] = await db
+      .insert(players)
+      .values({
+        firstName,
+        lastName,
+        dateOfBirth: new Date(dateOfBirth),
+        ageGroup,
+        parentId,
+        phone: null,
+        address: null,
+        placeOfBirth: null,
+        mysafaId: null,
+        nationalId: null,
+        nationality: null,
+        previousClub: null,
+        position: null,
+        season: season || '2026',
+        emergencyContactName: null,
+        emergencyContactPhone: null,
+        medicalNotes: null,
+        consentPhotos: false,
+        consentVideos: false,
+        consentTravel: false,
+        termsAccepted: false,
+        termsAcceptedAt: null,
+        parentSignature: null,
+        playerSignature: null,
+        registrationStatus: registrationStatus || 'pending',
+        status: 'active',
+      })
+      .returning();
 
     // If accepted, generate invoices
     if (registrationStatus === 'accepted' && parentId) {
