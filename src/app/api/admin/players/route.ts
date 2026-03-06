@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { players } from "@/lib/db/schema";
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { NextResponse } from 'next/server';
+import { generatePlayerInvoices } from '@/lib/invoice-generator';
 
 export async function POST(request: Request) {
   try {
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
     // Optionally check if the user is admin (you can add role check)
 
     const body = await request.json();
-    const { firstName, lastName, dateOfBirth, ageGroup, parentId } = body;
+    const { firstName, lastName, dateOfBirth, ageGroup, parentId, registrationStatus, season } = body;
 
     const [newPlayer] = await db.insert(players).values({
       firstName,
@@ -22,8 +23,15 @@ export async function POST(request: Request) {
       dateOfBirth: new Date(dateOfBirth),
       ageGroup,
       parentId: parentId || null, // will be null if not provided
-      status: 'active',
+      status: registrationStatus === 'accepted' ? 'active' : 'pending',
+      registrationStatus: registrationStatus || 'pending',
+      season: season || '2026',
     }).returning();
+
+    // If accepted, generate invoices
+    if (registrationStatus === 'accepted' && parentId) {
+      await generatePlayerInvoices(newPlayer.id, parentId, season || '2026');
+    }
 
     return NextResponse.json(newPlayer);
   } catch (error) {

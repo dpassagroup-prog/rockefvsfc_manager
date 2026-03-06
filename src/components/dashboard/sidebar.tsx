@@ -3,19 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
-  Users, 
   FileText, 
   CreditCard, 
   Bell, 
   Settings, 
   Home,
   Shield,
+  Users,
+  ClipboardList,
+  UserPlus,
   LogOut 
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-interface SidebarProps {
+interface AdminSidebarProps {
   user: {
     given_name: string;
     family_name: string;
@@ -23,13 +25,13 @@ interface SidebarProps {
   };
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export function AdminSidebar({ user }: AdminSidebarProps) {
   const pathname = usePathname();
   
   const navigationItems = [
     {
       title: "Dashboard",
-      href: "/dashboard",
+      href: "/dashboard/admin",
       icon: Home,
       description: "Overview and quick stats"
     },
@@ -37,7 +39,19 @@ export function Sidebar({ user }: SidebarProps) {
       title: "Players",
       href: "/dashboard/admin/players",
       icon: Users,
-      description: "Manage player profiles"
+      description: "Manage all players"
+    },
+    {
+      title: "Pending Registrations",
+      href: "/dashboard/admin/registrations",
+      icon: ClipboardList,
+      description: "Review pending player registrations"
+    },
+    {
+      title: "Register Player",
+      href: "/dashboard/admin/register",
+      icon: UserPlus,
+      description: "Register a new player manually"
     },
     {
       title: "Invoices",
@@ -55,17 +69,17 @@ export function Sidebar({ user }: SidebarProps) {
       title: "Notifications",
       href: "/dashboard/admin/notifications",
       icon: Bell,
-      description: "Send email notifications"
-    },
-    {
-      title: "Notifications",
-      href: "/dashboard/notifications",
-      icon: Bell,
       description: "System notifications"
     },
     {
+      title: "Financials",
+      href: "/dashboard/admin/financials",
+      icon: CreditCard,
+      description: "Financial overview and summaries"
+    },
+    {
       title: "Settings",
-      href: "/dashboard/settings",
+      href: "/dashboard/admin/settings",
       icon: Settings,
       description: "Account and preferences"
     }

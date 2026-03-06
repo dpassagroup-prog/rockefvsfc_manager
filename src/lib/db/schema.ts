@@ -8,6 +8,7 @@ export const users = pgTable('users', {
   email: text('email').notNull(),
   fullName: text('full_name').notNull(),
   phone: text('phone'),
+  address: text('address'), // Added for parent's residential address
   role: text('role').$type<'admin' | 'parent'>().notNull().default('parent'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
@@ -21,6 +22,29 @@ export const players = pgTable('players', {
   ageGroup: text('age_group').$type<'U13' | 'U14' | 'U15' | 'U17' | 'U19'>().notNull(),
   status: text('status').$type<'active' | 'archived' | 'transferred'>().notNull().default('active'),
   parentId: uuid('parent_id').references(() => users.id, { onDelete: 'cascade' }),
+  phone: text('phone'), // player's phone
+  address: text('address'), // player's residential address (if different from parent)
+  emergencyContactName: text('emergency_contact_name'),
+  emergencyContactPhone: text('emergency_contact_phone'),
+  medicalNotes: text('medical_notes'), // existing
+  // New fields for player bio
+  placeOfBirth: text('place_of_birth'),
+  mysafaId: text('mysafa_id'),
+  nationalId: text('national_id'),
+  nationality: text('nationality'),
+  previousClub: text('previous_club'),
+  position: text('position'),
+  season: text('season'), // e.g., '2026'
+  // New fields for registration management
+  registrationStatus: text('registration_status').$type<'pending' | 'accepted' | 'rejected'>().notNull().default('pending'),
+  termsAccepted: boolean('terms_accepted').notNull().default(false),
+  termsAcceptedAt: timestamp('terms_accepted_at'),
+  parentSignature: text('parent_signature'), // could store name or actual signature data
+  playerSignature: text('player_signature'),
+  // Consent fields (from the contract's consent form)
+  consentPhotos: boolean('consent_photos').notNull().default(false),
+  consentVideos: boolean('consent_videos').notNull().default(false),
+  consentTravel: boolean('consent_travel').notNull().default(false),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 

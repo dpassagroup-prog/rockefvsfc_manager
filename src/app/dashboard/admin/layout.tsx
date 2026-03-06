@@ -1,7 +1,7 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Sidebar } from "@/components/dashboard/sidebar";
+import { AdminSidebar } from "@/components/dashboard/sidebar";
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
 export default async function AdminLayout({
@@ -15,7 +15,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-background">
       <div className="flex">
-        <Sidebar 
+        <AdminSidebar 
           user={{
             given_name: kindeUser?.given_name || '',
             family_name: kindeUser?.family_name || '',

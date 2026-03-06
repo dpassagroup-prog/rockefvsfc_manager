@@ -33,6 +33,18 @@ export function ParentSidebar({ user }: ParentSidebarProps) {
       description: "Overview and quick stats"
     },
     {
+      title: "My Players",
+      href: "/dashboard/parent/players",
+      icon: Shield,
+      description: "View your registered players"
+    },
+    {
+      title: "Register Player",
+      href: "/dashboard/parent/register",
+      icon: Shield,
+      description: "Register a new player"
+    },
+    {
       title: "Invoices",
       href: "/dashboard/parent/invoices",
       icon: FileText,
