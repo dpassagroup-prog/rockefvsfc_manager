@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { PaymentReviewTable } from "@/components/admin/PaymentReviewTable";
+import { BackToDashboard } from "@/components/admin/BackToDashboard";
 
 export default async function AdminPaymentsPage() {
   const { getUser } = getKindeServerSession();
@@ -29,6 +30,7 @@ export default async function AdminPaymentsPage() {
 
   return (
     <div className="space-y-6">
+      <BackToDashboard />
       <h1 className="text-3xl font-bold">Pending Payment Reviews</h1>
       <PaymentReviewTable payments={pendingPayments} />
     </div>

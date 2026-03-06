@@ -4,6 +4,8 @@ import { eq, and } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { PlayerTable } from "@/components/admin/PlayerTable";
+import { AddPlayerDialog } from "@/components/admin/AddPlayerDialog";
+import { BackToDashboard } from "@/components/admin/BackToDashboard";
 
 // Allowed age groups (must match schema)
 const allowedAgeGroups = ['U13', 'U14', 'U15', 'U17', 'U19'] as const;
@@ -56,11 +58,10 @@ export default async function AdminPlayersPage({
 
   return (
     <div className="space-y-6">
+      <BackToDashboard />
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Player Management</h1>
-        <button className="bg-primary text-white px-4 py-2 rounded-md">
-          Add New Player
-        </button>
+        <AddPlayerDialog />
       </div>
       <PlayerTable players={allPlayers} />
     </div>

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { InvoiceTable } from "@/components/admin/InvoiceTable";
 import { CreateInvoiceDialog } from "@/components/admin/CreateInvoiceDialog";
+import { BackToDashboard } from "@/components/admin/BackToDashboard";
 
 export default async function AdminInvoicesPage() {
   const { getUser } = getKindeServerSession();
@@ -29,6 +30,7 @@ export default async function AdminInvoicesPage() {
 
   return (
     <div className="space-y-6">
+      <BackToDashboard />
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Invoices</h1>
         <CreateInvoiceDialog />

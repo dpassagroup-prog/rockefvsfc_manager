@@ -1,7 +1,37 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { Users, FileText, CreditCard, Bell } from "lucide-react";
 
 export default function AdminDashboard() {
+  // Stats (mock data – replace with real data from an API later if needed)
+  const stats = {
+    totalPlayers: 150,
+    newPlayersThisMonth: 12,
+    pendingInvoices: 23,
+    pendingInvoicesTotal: 45000,
+    paymentsThisMonth: 12500,
+    paymentsGrowth: 8,
+    notifications: 5,
+    unreadNotifications: 3,
+  };
+
+  const recentPlayers = [
+    { name: "John Smith", ageGroup: "U15", date: "2 days ago" },
+    { name: "Sarah Johnson", ageGroup: "U13", date: "3 days ago" },
+    { name: "Michael Brown", ageGroup: "U17", date: "5 days ago" },
+    { name: "Emily Davis", ageGroup: "U14", date: "1 week ago" },
+    { name: "David Wilson", ageGroup: "U19", date: "2 weeks ago" },
+  ];
+
+  const recentFinancial = [
+    { type: "Payment", amount: "R 1,200", status: "Confirmed", date: "Today" },
+    { type: "Invoice", amount: "R 2,500", status: "Pending", date: "Yesterday" },
+    { type: "Payment", amount: "R 800", status: "Pending", date: "2 days ago" },
+    { type: "Invoice", amount: "R 1,800", status: "Paid", date: "3 days ago" },
+    { type: "Payment", amount: "R 1,500", status: "Confirmed", date: "1 week ago" },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
@@ -18,49 +48,30 @@ export default function AdminDashboard() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Players</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">150</div>
-            <p className="text-xs text-muted-foreground">+12 this month</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Invoices</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">23</div>
-            <p className="text-xs text-muted-foreground">R 45,000 total</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Payments This Month</CardTitle>
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R 12,500</div>
-            <p className="text-xs text-muted-foreground">+8% from last month</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Notifications</CardTitle>
-            <Bell className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">5</div>
-            <p className="text-xs text-muted-foreground">3 unread</p>
-          </CardContent>
-        </Card>
+        <StatCard
+          icon={<Users className="h-4 w-4 text-muted-foreground" />}
+          title="Total Players"
+          value={stats.totalPlayers}
+          subtitle={`+${stats.newPlayersThisMonth} this month`}
+        />
+        <StatCard
+          icon={<FileText className="h-4 w-4 text-muted-foreground" />}
+          title="Pending Invoices"
+          value={stats.pendingInvoices}
+          subtitle={`R ${stats.pendingInvoicesTotal.toLocaleString()} total`}
+        />
+        <StatCard
+          icon={<CreditCard className="h-4 w-4 text-muted-foreground" />}
+          title="Payments This Month"
+          value={`R ${stats.paymentsThisMonth.toLocaleString()}`}
+          subtitle={`+${stats.paymentsGrowth}% from last month`}
+        />
+        <StatCard
+          icon={<Bell className="h-4 w-4 text-muted-foreground" />}
+          title="Notifications"
+          value={stats.notifications}
+          subtitle={`${stats.unreadNotifications} unread`}
+        />
       </div>
 
       {/* Quick Actions */}
@@ -71,45 +82,30 @@ export default function AdminDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-primary/5 p-4 rounded-lg border">
-              <h3 className="font-semibold mb-2">Add New Player</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Register a new player and assign them to a team.
-              </p>
-              <button className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors">
-                Add Player
-              </button>
-            </div>
-
-            <div className="bg-secondary/5 p-4 rounded-lg border">
-              <h3 className="font-semibold mb-2">Generate Invoice</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Create and send invoices to parents.
-              </p>
-              <button className="w-full bg-secondary text-white py-2 px-4 rounded-md hover:bg-secondary/90 transition-colors">
-                Create Invoice
-              </button>
-            </div>
-
-            <div className="bg-green-500/5 p-4 rounded-lg border">
-              <h3 className="font-semibold mb-2">Review Payments</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Check and verify payment uploads.
-              </p>
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
-                Review Payments
-              </button>
-            </div>
-
-            <div className="bg-blue-500/5 p-4 rounded-lg border">
-              <h3 className="font-semibold mb-2">Send Notification</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Broadcast messages to parents and players.
-              </p>
-              <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
-                Send Message
-              </button>
-            </div>
+            <ActionCard
+              title="Add New Player"
+              description="Register a new player and assign them to a team."
+              buttonText="Add Player"
+              href="/dashboard/admin/players"
+            />
+            <ActionCard
+              title="Generate Invoice"
+              description="Create and send invoices to parents."
+              buttonText="Create Invoice"
+              href="/dashboard/admin/invoices"
+            />
+            <ActionCard
+              title="Review Payments"
+              description="Check and verify payment uploads."
+              buttonText="Review Payments"
+              href="/dashboard/admin/payments"
+            />
+            <ActionCard
+              title="Send Notification"
+              description="Broadcast messages to parents and players."
+              buttonText="Send Message"
+              href="/dashboard/admin/notifications"
+            />
           </div>
         </CardContent>
       </Card>
@@ -123,14 +119,8 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[
-                { name: "John Smith", ageGroup: "U15", date: "2 days ago" },
-                { name: "Sarah Johnson", ageGroup: "U13", date: "3 days ago" },
-                { name: "Michael Brown", ageGroup: "U17", date: "5 days ago" },
-                { name: "Emily Davis", ageGroup: "U14", date: "1 week ago" },
-                { name: "David Wilson", ageGroup: "U19", date: "2 weeks ago" }
-              ].map((player, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+              {recentPlayers.map((player, i) => (
+                <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
                     <div className="font-medium">{player.name}</div>
                     <div className="text-sm text-muted-foreground">{player.ageGroup}</div>
@@ -149,24 +139,17 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[
-                { type: "Payment", amount: "R 1,200", status: "Confirmed", date: "Today" },
-                { type: "Invoice", amount: "R 2,500", status: "Pending", date: "Yesterday" },
-                { type: "Payment", amount: "R 800", status: "Pending", date: "2 days ago" },
-                { type: "Invoice", amount: "R 1,800", status: "Paid", date: "3 days ago" },
-                { type: "Payment", amount: "R 1,500", status: "Confirmed", date: "1 week ago" }
-              ].map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+              {recentFinancial.map((activity, i) => (
+                <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
                     <div className="font-medium">{activity.type}</div>
                     <div className="text-sm text-muted-foreground">{activity.amount}</div>
                   </div>
                   <div className="text-right">
                     <div className={`px-2 py-1 rounded text-xs font-medium ${
-                      activity.status === "Confirmed" ? "bg-green-100 text-green-800" :
-                      activity.status === "Paid" ? "bg-green-100 text-green-800" :
-                      activity.status === "Pending" ? "bg-yellow-100 text-yellow-800" :
-                      "bg-gray-100 text-gray-800"
+                      activity.status === "Confirmed" || activity.status === "Paid"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
                     }`}>
                       {activity.status}
                     </div>
@@ -178,6 +161,36 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
+    </div>
+  );
+}
+
+// Helper components (can be moved to separate files later, but fine here)
+function StatCard({ icon, title, value, subtitle }: any) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        {icon}
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+        <p className="text-xs text-muted-foreground">{subtitle}</p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function ActionCard({ title, description, buttonText, href }: any) {
+  return (
+    <div className="bg-primary/5 p-4 rounded-lg border">
+      <h3 className="font-semibold mb-2">{title}</h3>
+      <p className="text-sm text-muted-foreground mb-4">{description}</p>
+      <Link href={href} passHref>
+        <Button className="w-full" size="sm">
+          {buttonText}
+        </Button>
+      </Link>
     </div>
   );
 }

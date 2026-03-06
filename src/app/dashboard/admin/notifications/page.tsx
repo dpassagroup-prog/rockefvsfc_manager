@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { NotificationForm } from "@/components/admin/NotificationForm";
+import { BackToDashboard } from "@/components/admin/BackToDashboard";
 
 export default async function AdminNotificationsPage() {
   const { getUser } = getKindeServerSession();
@@ -22,6 +23,7 @@ export default async function AdminNotificationsPage() {
 
   return (
     <div className="space-y-6">
+      <BackToDashboard />
       <h1 className="text-3xl font-bold">Send Notifications</h1>
       <NotificationForm parents={parents} />
     </div>
